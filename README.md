@@ -178,9 +178,9 @@ npm test
 
 ## Future Enhancements
 
-- Notifications and Alerts: Set breaking news and daily digest news alert
-- Detailed postman API Documentation link inorder to test endpoints
-- Write integration/unit tests for 80% of apps logic.
+- Notifications and Alerts: Set breaking news and daily digest news alert (Done)✅
+- Detailed postman API Documentation link inorder to test endpoints (Done)✅
+- Write integration/unit tests for 80% of apps logic. (Pending)🔄
 
 ## Contributing
 
