@@ -2,6 +2,8 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { app } from "../app";
 
+jest.setTimeout(30000); // 30 seconds
+
 let mongo: any;
 beforeAll(async () => {
   process.env.JWT_SECRET = "Believe,everythingwillbeallright";

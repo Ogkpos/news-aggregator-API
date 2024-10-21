@@ -9,11 +9,26 @@ interface Preferences {
   };
 }
 
+interface Notifications {
+  breakingNews?: {
+    enabled?: boolean;
+    categories?: string[];
+    sources?: string[];
+    keywords?: string[];
+  };
+  dailyDigest?: {
+    enabled?: boolean;
+    time?: Date;
+    categories?: string[];
+  };
+}
+
 interface UserAttrs {
   username: string;
   email: string;
   password: string;
   preferences?: Preferences;
+  notifications?: Notifications;
 }
 interface UserDoc extends mongoose.Document {
   username: string;
@@ -26,6 +41,7 @@ interface UserDoc extends mongoose.Document {
   createdAt: Date;
   preferences: Preferences;
   savedArticles: mongoose.Types.ObjectId[];
+  notifications: Notifications;
 }
 
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -50,7 +66,6 @@ const userSchema = new mongoose.Schema(
     otpExpiresAt: Number,
     otp: {
       type: Number,
-      // select: false,
     },
     verified: Boolean,
     createdAt: {
@@ -74,6 +89,40 @@ const userSchema = new mongoose.Schema(
         ref: "Article",
       },
     ],
+    notifications: {
+      breakingNews: {
+        enabled: {
+          type: Boolean,
+          default: true,
+        },
+        categories: {
+          type: [String],
+          default: [],
+        },
+        sources: {
+          type: [String],
+          default: [],
+        },
+        keywords: {
+          type: [String],
+          default: [],
+        },
+      },
+      dailyDigest: {
+        enabled: {
+          type: Boolean,
+          default: true,
+        },
+        time: {
+          type: String,
+          default: "08:00",
+        },
+        categories: {
+          type: [String],
+          default: [],
+        },
+      },
+    },
   },
   {
     toJSON: {
@@ -94,7 +143,6 @@ userSchema.pre("save", async function (next) {
     const hashed = await Password.toHash(this.get("password"));
     this.set("password", hashed);
   }
-
   next();
 });
 
@@ -106,6 +154,19 @@ userSchema.statics.build = (attrs: UserAttrs) => {
       sources: attrs.preferences?.sources || [],
       keywords: {
         include: attrs.preferences?.keywords?.include || [],
+      },
+    },
+    notifications: {
+      breakingNews: {
+        enabled: attrs.notifications?.breakingNews?.enabled || true,
+        categories: attrs.notifications?.breakingNews?.categories || [],
+        sources: attrs.notifications?.breakingNews?.sources || [],
+        keywords: attrs.notifications?.breakingNews?.keywords || [],
+      },
+      dailyDigest: {
+        enabled: attrs.notifications?.dailyDigest?.enabled || true,
+        categories: attrs.notifications?.dailyDigest?.categories || [],
+        time: attrs.notifications?.dailyDigest?.time || "08:00",
       },
     },
   });

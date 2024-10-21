@@ -13,6 +13,8 @@ The News Aggregator API is designed to provide users with a personalized news ex
 - Share Articles: Users can share articles amongst themselves.
 - Comment Articles: Users can comment on an article
 - Advanced Search: Users can perform keyword-based searches across multiple sources.
+- Error Handling: Detailed and consistent error handling throughout the
+  entire application
 
 **Prerequisites:**
 
@@ -76,6 +78,17 @@ npm test
 
     - Users provide a keyword/keywords inorder to perform keyword search
     - Overall users see aggregated news based on the news sources they provided
+
+## List of some RSS Url sources you can get aggregated news from
+
+- https://www.nme.com/news/music/feed
+- https://www.espn.com/espn/rss/news
+- http://www.popsci.com/rss.xml
+- http://time.com/tech/feed/
+- http://mashable.com/us-world/rss/
+- http://rollingstoneindia.com/feed/
+- http://www.techtree.com/rss.xm
+- http://rss.csmonitor.com/feeds/science
 
 ## API Endpoints
 
@@ -143,6 +156,10 @@ npm test
 - GET /api/articles/:articleId/comments
   - Retrieve/get comments on an article
 
+## POSTMAN API Documentation
+
+- https://documenter.getpostman.com/view/25556342/2sAXxY3oK5
+
 ## Project Structure
 
 ```bash
@@ -157,7 +174,6 @@ npm test
 ├── .env.example       # Example environment configuration
 ├── package.json       # Project dependencies and scripts
 └── README.md          # Project documentation
-
 ```
 
 ## Future Enhancements

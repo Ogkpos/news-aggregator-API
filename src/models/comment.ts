@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 
 interface CommentAttrs {
   text: string;
-  user: string; //   mongoose.Types.ObjectId;
-  article: string; //mongoose.Types.ObjectId;
+  user: string;
+  article: string;
 }
 interface CommentDoc extends mongoose.Document {
   text: string;

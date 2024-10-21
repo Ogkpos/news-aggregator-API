@@ -19,6 +19,10 @@ router.post(
       .optional()
       .isArray({ min: 0 })
       .withMessage("Interests must be an array of strings"),
+    body("categories")
+      .optional()
+      .isArray({ min: 0 })
+      .withMessage("categories must be an array of strings"),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -34,6 +38,7 @@ router.post(
       preferences: { interests: interests || [] },
     });
     await user.save();
+
     const token = jwt.sign(
       {
         id: user.id,
@@ -53,7 +58,7 @@ router.post(
     //send mail
     // await sendVerificationEmail(email, token);
 
-    res.status(201).send({ user, token });
+    res.status(201).send({ user });
   }
 );
 export { router as signupRouter };

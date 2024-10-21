@@ -9,11 +9,14 @@ import { authenticator } from "otplib";
 const router = express.Router();
 
 const otpfunc = () => {
-  const secret: string = process.env.OTP_SECRET!;
-
-  const token = authenticator.generate(secret);
-  authenticator.check(token, secret);
-  return token;
+  try {
+    const secret: string = process.env.OTP_SECRET!;
+    const token: any = authenticator.generate(secret);
+    authenticator.check(token, secret) as any;
+    return +token;
+  } catch (error) {
+    // console.log(error);
+  }
 };
 router.post(
   "/api/users/signin",
@@ -38,21 +41,22 @@ router.post(
 
     //otp
     const otp = otpfunc();
+    //console.log(otp);
+    //
     const otpExpiration = Date.now() + 1 * 60 * 1000;
-
+    //
     existingUser.otp = otp;
     existingUser.otpExpiresAt = otpExpiration;
 
-    await existingUser.save();
     //send to mail
 
+    await existingUser.save();
     res.send({
-      message: "OTP sent successfully",
-      data: existingUser.toJSON({
-        transform(doc, ret, options) {
-          ret.otp = parseFloat(otp);
-        },
-      }),
+      message: "OTP sent successfully, expires in a minute",
+      OTP: otp,
+      data: {
+        existingUser,
+      },
     });
   }
 );

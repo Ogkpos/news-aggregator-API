@@ -19,20 +19,23 @@ router.post(
     const { email, otp } = req.body;
     const existingUser = await User.findOne({ email });
     if (!existingUser) {
-      throw new BadRequestError("Invalid email or OTP");
+      throw new BadRequestError("Invalid email");
     }
 
     if (existingUser.otp !== otp || Date.now() > existingUser.otpExpiresAt) {
-      throw new BadRequestError("Invalid/expired OTP or Wrong email");
+      throw new BadRequestError("Invalid email or expired/invalid OTP code");
     }
-    //Generate Token
 
+    existingUser.set({ verified: true });
+    await existingUser.save();
+
+    //Generate Token
     const token = jwt.sign(
       { email: existingUser.email, id: existingUser.id },
       process.env.JWT_SECRET!
     );
 
-    existingUser.otp = undefined;
+    // existingUser.otp = undefined;
     req.session = {
       jwt: token,
     };

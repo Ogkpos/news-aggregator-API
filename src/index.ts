@@ -26,7 +26,7 @@ const start = async () => {
     throw new Error("");
   }
   if (!process.env.OTP_SECRET) {
-    throw new Error("");
+    throw new Error("OTP secret must be defined");
   }
   if (!process.env.EMAIL_HOST) {
     throw new Error("");

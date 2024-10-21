@@ -20,6 +20,10 @@ import { shareArticleRouter } from "./routes/share-article";
 import { getShareArticleRouter } from "./routes/get-shared-article";
 import { postCommentRouter } from "./routes/post-a-comment";
 import { getCommentRouter } from "./routes/retrieve-comment-for-article";
+import { breakingNewsRouter } from "./routes/breaking-news";
+import { getBreakingNewsRouter } from "./routes/get-breaking-news";
+import { dailyDigestRouer } from "./routes/daily-digest-news";
+import { getDailyDigestRouter } from "./routes/get-daily-digest-news";
 // import cors from "cors";
 
 const app = express();
@@ -48,12 +52,16 @@ app.use(shareArticleRouter);
 app.use(getShareArticleRouter);
 app.use(postCommentRouter);
 app.use(getCommentRouter);
+app.use(breakingNewsRouter);
+app.use(getBreakingNewsRouter);
+app.use(dailyDigestRouer);
+app.use(getDailyDigestRouter);
 
 app.all("*", async (req, res, next) => {
   throw new NotFoundError();
 });
 
 // @ts-ignore
-app.use(errorHandler!);
+app.use(errorHandler);
 
 export { app };

@@ -6,10 +6,11 @@ import { NotFoundError } from "../errors/not-found-error";
 const router = express.Router();
 
 router.get(
-  "/api/news/:id",
+  "/api/news/:articleId",
   requireAuth,
   async (req: Request, res: Response) => {
-    const article = await Article.findById(req.params.id);
+    const { articleId } = req.params;
+    const article = await Article.findById(articleId);
     if (!article) {
       throw new NotFoundError();
     }
